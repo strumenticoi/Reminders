@@ -113,10 +113,10 @@
             position: absolute;
             color: var(--white);
             font-size: 2rem;
-            top: -10px;
-            left: 0;
+            top: 0;
+            right: 0;
             font-weight: bold;
-            margin-left: 5px;
+            margin-right: 10px;
         }
 
         .close:hover,
@@ -345,7 +345,6 @@
             font-size: 0.8rem;
             color: var(--black) !important;
             font-weight: bold;
-            font-family: Courier;
         }
 
         .alarm-message {
@@ -378,7 +377,6 @@
             font-weight: bold;
             border-radius: 5px;
             padding: 1px 5px;
-            font-family: Courier;
         }
 
         .drop-line {
@@ -606,6 +604,7 @@
 
                     // Update the DOM with the new alarm data
                     updateAlarmInDOM(savedAlarms[alarmIndex]);
+                    sortAlarmsInDOM();
                 }
             }
 
@@ -663,6 +662,8 @@
             var editButton = document.createElement('button');
             editButton.textContent = 'Edit';
             editButton.classList.add('edit-alarm-btn');
+
+            document.getElementById('saveAlarm').textContent = 'Aggiungi';
 
             editButton.addEventListener('click', function () {
                 editAlarm(alarm);
@@ -799,14 +800,19 @@
 
         // Show modal when editing an existing alarm
         function editAlarm(alarm) {
-            editingAlarmId = alarm.id; // Set the ID of the alarm being edited
+            editingAlarmId = alarm.id;
 
-            // Populate the modal fields with the alarm data
-            document.getElementById('alarmTime').value = alarm.time;
+            document.getElementById('saveAlarm').textContent = 'Salva';
+
+            // Prendi l'orario aggiornato dall'elemento DOM
+            const timeElement = document.querySelector(`.alarm[data-alarm-id='${alarm.id}'] .alarm-time`);
+            const currentTime = timeElement ? timeElement.textContent : alarm.time;
+
+            document.getElementById('alarmTime').value = currentTime;
             document.getElementById('alarmMessage').value = alarm.message;
             document.getElementById('selettiva').value = alarm.selettiva;
 
-            alarmModal.style.display = 'block'; // Show the modal
+            alarmModal.style.display = 'block';
         }
 
 
